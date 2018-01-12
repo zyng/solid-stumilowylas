@@ -9,6 +9,4 @@ Wybrany przez nas [__projekt__](https://github.com/mechanicles/ruby-tictactoe) z
 
 Przed rozpoczęciem refaktoryzacji, za pomocą gemu *Reek*, projekt zawierał następujące warningi:
 
-![image](https://i.imgur.com/4BZN50i.png)
-![image](https://i.imgur.com/iNQLF0j.png)
-![image](https://i.imgur.com/7l6CJuG.png)
+![image](https://i.imgur.com/iSMPTzR.jpg)
