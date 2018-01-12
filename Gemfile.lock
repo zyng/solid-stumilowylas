@@ -30,11 +30,3 @@ GEM
       descendants_tracker (~> 0.0, >= 0.0.3)
       equalizer (~> 0.0, >= 0.0.9)
 
-PLATFORMS
-  x64-mingw32
-
-DEPENDENCIES
-  reek!
-
-BUNDLED WITH
-   1.16.0
