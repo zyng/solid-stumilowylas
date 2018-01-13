@@ -5,7 +5,14 @@
 #----------------------------------------------
 
 class Player
-  attr_accessor :mark
+
+  def mark
+    @mark
+  end
+
+  def mark=(mark)
+    @mark = mark
+  end
 
   def initialize(mark) # initialize Player's Mark (i.e "X" or "O")
     @mark = mark
