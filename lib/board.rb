@@ -26,23 +26,33 @@ class Board
   end
 
   def display_positions # initial user friendly board display
-    puts ""
-    puts " 1 | 2 | 3 "
-    puts "-----------"
-    puts " 4 | 5 | 6 "
-    puts "-----------"
-    puts " 7 | 8 | 9 "
-    puts ""
+    
+    for index in 1..9
+      puts "" if index==1
+      print " #{index} "
+      if index%3!=0
+        print "\|"
+      elsif index!=9
+        print "\n-----------\n"
+      end 
+    end
+
+    print "\n\n"
   end
 
   def display
-    puts ""
-    puts " #{self.positions_with_values["1"]} | #{self.positions_with_values["2"]} | #{self.positions_with_values["3"]} "
-    puts "-----------"
-    puts " #{self.positions_with_values["4"]} | #{self.positions_with_values["5"]} | #{self.positions_with_values["6"]} "
-    puts "-----------"
-    puts " #{self.positions_with_values["7"]} | #{self.positions_with_values["8"]} | #{self.positions_with_values["9"]} "
-    puts ""
+    
+    for index in 1..9
+      puts "" if index==1
+      print " #{self.positions_with_values[index.to_s]} "
+      if index%3!=0
+        print "\|"
+      elsif index!=9
+        print "\n-----------\n"
+      end 
+    end
+
+    print "\n"
   end
 
 end
