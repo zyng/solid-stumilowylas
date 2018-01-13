@@ -18,18 +18,23 @@ class Player
     @mark = mark
   end
 
-  def move(board, position, engine) # X player move
-    board.positions_with_values[position] = self.mark
-    board.display
-    winner = engine.check_winner(board)
+
+  def check_end(boards,engines)
+    winner = engines.check_winner(boards)
     if winner != "No One"
-      engine.display_winner(self.mark)
+      boards.display
+      engines.display_winner(self.mark)
     end
   end
 
+  def move(board, position, engine) # X player move
+    board.positions_with_values[position] = self.mark
+    board.display
+    check_end(board,engine)
+  end
+
   def best_move(board, engine) # Robot's (O Player) best move, includes artificial intelligence
-    puts ""
-    puts "Robot (O player) is taking turn..."
+    puts "\nRobot (O player) is taking turn..."
 
     sleep 2
 
@@ -37,15 +42,8 @@ class Player
 
     board.positions_with_values["#{position}"] = "O"
 
-    winner = engine.check_winner(board)
+    check_end(board,engine)
 
-    if winner != "No One"
-      puts ""
-      board.display
-      engine.display_winner(self.mark)
-    end
-
-    puts ""
     board.display
   end
 
@@ -71,8 +69,9 @@ class Player
 
     while flag do
       random_position = 1 + rand(8)
-      if board.positions_with_values["#{random_position}"] != "X" and board.positions_with_values["#{random_position}"] != "O"
-        board.positions_with_values["#{random_position}"] = "O"
+       positions_with_values = board.positions_with_values["#{random_position}"]
+      if positions_with_values != "X" and positions_with_values != "O"
+        positions_with_values = "O"
         return random_position
         flag false
       end
