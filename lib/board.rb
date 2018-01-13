@@ -6,7 +6,15 @@
 
 class Board
 
-  attr_accessor :info, :positions_with_values
+  def positions_with_values
+    @positions_with_values
+  end
+
+  def positions_with_values=(pos_val)
+    @positions_with_values = pos_val
+  end
+
+
 
   WINNING_PLACES = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
 
