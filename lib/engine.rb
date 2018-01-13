@@ -86,11 +86,12 @@ Doc
   def check_winner(board)
     x_count = 0
     o_count = 0
+    positions_with_values = board.positions_with_values
     Board::WINNING_PLACES.each do |winning_place|
       winning_place.each do |index|
-        if board.positions_with_values["#{index}"] == "X"
+        if positions_with_values["#{index}"] == "X"
           x_count = x_count + 1
-        elsif board.positions_with_values["#{index}"] == "O"
+        elsif positions_with_values["#{index}"] == "O"
           o_count = o_count + 1
         end
       end
@@ -108,6 +109,7 @@ Doc
     end
     return "No One"
   end
+
 
   def display_winner(mark)
     puts "\n*************| Result |*************"
