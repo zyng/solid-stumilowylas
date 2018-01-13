@@ -1,5 +1,6 @@
 require_relative '../lib/board' 
 require_relative '../lib/player'
+require_relative '../lib/engine'
  
 describe Board do 
   subject(:board){described_class.new} 
