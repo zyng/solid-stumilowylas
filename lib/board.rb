@@ -25,19 +25,17 @@ class Board
                               "7" => " ", "8" => " ", "9" => " "}
   end
 
-  def display_positions # initial user friendly board display
+  def display_positions(size) # initial user friendly board display
     
-    for index in 1..9
-      puts "" if index==1
-      print " #{index} "
-      if index%3!=0
+    for index in 1 .. size*size
+      print "  #{index} " if index < 10
+      print " #{index} " if index >= 10
+      if index%size!=0
         print "\|"
-      elsif index!=9
-        print "\n-----------\n"
-      end 
+      elsif index!=(size*size)
+        print "\n" + "-----"*size + "\n"
+      end
     end
-
-    print "\n\n"
   end
 
   def display
