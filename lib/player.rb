@@ -65,6 +65,7 @@ class Player
 
     if !x_position.nil?
       return x_position
+    end
 
     while flag do
       random_position = 1 + rand(8)
@@ -79,12 +80,10 @@ class Player
 
   
 
-  end
-
   def position_priority(board, mark)
+    positions_with_values = board.positions_with_values
     Board::WINNING_PLACES.each do |winning_place|
-      priority_positions_order = [[0, 1, 2], [0, 2, 1], [1, 2, 0]]
-      positions_with_values = board.positions_with_values
+      priority_positions_order = [[0, 1, 2], [0, 2, 1], [1, 2, 0]] 
        priority_positions_order.each do |priority|
         if (positions_with_values["#{winning_place[priority[0]]}"] == mark) and (positions_with_values["#{winning_place[priority[1]]}"] == mark)
           if positions_with_values["#{winning_place[priority[2]]}"] == " "
@@ -92,10 +91,8 @@ class Player
           end
         end
       end      
-      #winner_position(winning_place,board,mark,priority_positions_order)
     end
     return nil
   end
-
 
 end
