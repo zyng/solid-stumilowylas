@@ -25,6 +25,7 @@ class TxtDocumentParser < BaseDocumentParser
 
   def initialize(path = "words.txt")
     @path = path
+    @file_handler = file_handler
   end
 
   def parse
@@ -41,6 +42,7 @@ class DocxDocumentParser < BaseDocumentParser
   
   def initialize(path = "words.txt")
     @path = path
+    @file_handler = file_handler
   end
 
   def parse
