@@ -10,3 +10,7 @@ Wybrany przez nas [__projekt__](https://github.com/mechanicles/ruby-tictactoe) z
 Przed rozpoczęciem refaktoryzacji, za pomocą gemu *Reek*, projekt zawierał następujące warningi:
 
 ![image](https://i.imgur.com/iSMPTzR.jpg)
+
+Po stworzeniu podstawowych testów dla gema *RSpec* zabraliśmy się za naprawianie warningów.
+
+Następnie postanowiliśmy rozszerzyć funkcjonalność programu poprzez dodanie algorytmu minimax.

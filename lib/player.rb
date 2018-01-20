@@ -38,7 +38,7 @@ class Player
 
     sleep 2
 
-    position = check_priority(board)
+    position = check_priority(board, engine, 'O')
 
     board.positions_with_values["#{position}"] = "O"
 
@@ -49,34 +49,43 @@ class Player
 
   private
 
-  def check_priority(board) # artificial intelligence logic comes here
-    flag = true
+  def check_priority(board, engine, current_player) # artificial intelligence logic comes here
+    return score(board, engine) if engine.check_winner(board) != "No One"
 
-    x_mark = "X"
-    o_mark = "O"
+    scores = {}
 
-    o_position = position_priority(board, o_mark) # O's position should check first.
-
-    if !o_position.nil?
-      return o_position
+    board.available_spaces.each do |space|
+      potential_board = board.dup
+      potential_board.place_piece(space, current_player)
+      scores[space] = check_priority(potential_board, engine, switch(current_player))
     end
 
-    x_position = position_priority(board, x_mark)
-
-    if !x_position.nil?
-      return x_position
-    end
-
-    while flag do
-      random_position = 1 + rand(8)
-       positions_with_values = board.positions_with_values["#{random_position}"]
-      if positions_with_values != "X" and positions_with_values != "O"
-        positions_with_values = "O"
-        return random_position
-        flag false
-      end
-    end
+    best_score = the_best_move(current_player, scores)
+    return best_score
   end
+
+  def score(board, engine)
+    if engine.check_winner(board) == 'O'
+      return 10
+    elsif engine.check_winner(board) == 'X'
+      return -10
+    end
+    0
+  end
+
+  def switch(piece)
+    piece == 'X' ? 'O' : 'X'
+  end
+
+  def the_best_move(scores)
+    if piece == 'O'
+      scores.max_by { |_k, v| v}
+    else
+      scores.min_by { |_k, v| v}
+    end
+    return scores[0]
+  end
+
 
   
 

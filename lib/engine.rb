@@ -30,10 +30,7 @@ Doc
 
   def start(x_player, o_player, board)
 
-    size_of_board = 0 
-    check_size_of_board(size_of_board,board)
     puts "\n >> PLEASE SEE THE POSITIONS OF THE BOARD << \n\n"
-
 
     print "Do you want to play first? <y/n>: "
     ans = gets.chomp
@@ -86,21 +83,6 @@ Doc
     end
   end
 
-  def check_size_of_board(size,board)
-    flag=true
-
-    while flag do
-      if (size >= 2 && size <= 10)    
-        flag = false
-      else
-        print "What size do you want NxN? <2-10>: " 
-        size = gets.chomp.to_i
-      end
-    end
-
-    board.display_positions(size)
-  end
-
   def check_winner(board)
     x_count = 0
     o_count = 0
@@ -128,10 +110,6 @@ Doc
     return "No One"
   end
 
-  def count_xo
-    
-  end
-
 
   def display_winner(mark)
     puts "\n*************| Result |*************"
@@ -151,8 +129,7 @@ engine.display_info
 x_player = Player.new("X")
 o_player = Player.new("O") # This is a robot :)
 board    = Board.new
-#board.display_positions()
-
+board.display_positions
 
 engine.start(x_player, o_player, board) # this will start game and
                                         # automatically terminate the game if player wins the game

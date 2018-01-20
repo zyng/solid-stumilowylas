@@ -25,17 +25,19 @@ class Board
                               "7" => " ", "8" => " ", "9" => " "}
   end
 
-  def display_positions(size) # initial user friendly board display
+  def display_positions # initial user friendly board display
     
-    for index in 1 .. size*size
-      print "  #{index} " if index < 10
-      print " #{index} " if index >= 10
-      if index%size!=0
+    for index in 1..9
+      puts "" if index==1
+      print " #{index} "
+      if index%3!=0
         print "\|"
-      elsif index!=(size*size)
-        print "\n" + "-----"*size + "\n"
-      end
+      elsif index!=9
+        print "\n-----------\n"
+      end 
     end
+
+    print "\n\n"
   end
 
   def display
@@ -53,5 +55,21 @@ class Board
     print "\n"
   end
 
+  def space_available?(space)
+    positions_with_values["#{space}"]==" " ? (return true) : (return false)
+  end
+
+  def available_spaces
+    available = []
+    (1..9).each do |iterator|
+      available << iterator if space_available?(iterator)
+    end
+    return available
+  end
+
+  def place_piece(space, piece)
+    space = space+1
+    positions_with_values["#{space}"] = piece
+  end
 end
 
