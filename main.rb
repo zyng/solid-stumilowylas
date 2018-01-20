@@ -4,6 +4,7 @@ require_relative "z_order"
 require_relative "compound_word"
 require_relative "document_parser"
 
+#main class
 class GameWindow < Gosu::Window
   WIDTH = 1200
   HEIGHT= 500
