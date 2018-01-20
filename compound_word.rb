@@ -2,7 +2,7 @@ require_relative "word"
 #CompoundWord class
 class CompoundWord < Word 
 	
-	attr_reader :position_y, :points
+	attr_reader :position_y, :points, :vel
 
 	def initialize(string)
 		@position_y=position_y

@@ -29,34 +29,53 @@ class GameWindow < Gosu::Window
   def determine_words_database
     puts "Would you like to use your own words database (y/n)?"
     answer = gets.chomp
-    #any answer that contains y,Y and doesn't contain n,N will work
-    if answer =~ /y/i && !(answer =~ /n/i)
-      puts "Please specify name of the file in the main game folder"
-      file_name = gets.chomp
-      return parse_file_type(file_name)
-    #any answer that contains n,N and doesn't contain y,Y will work
-    elsif answer =~ /n/i && !(answer =~ /y/i) 
-      default_words_list = DocumentParser.new
-      return default_words_list.parse
+    #answer y,Y will work
+    if answer == "y" || answer == "Y"
+      determine_db
+    #answer n,N will work
+    elsif answer == "n" || answer == "N"
+      default_db
     else
-      puts "We couldn't determine the answer with the input you gave. Please try again!"
-      determine_words_database()
+      wrong_answer
     end
+  end
+
+  def determine_db
+    puts "Please specify name of the file in the main game folder"
+    file_name = gets.chomp
+    return parse_file_type(file_name)
+  end
+
+  def default_db
+    default_words_list = DocumentParser.new
+    return default_words_list.parse
+  end
+
+  def wrong_answer
+    puts "We couldn't determine the answer with the input you gave. Please try again!"
+    determine_words_database()
   end
 
   def parse_file_type(file_name)
     split_file_name = file_name.split(".")
     case split_file_name[-1]
     when "txt"
-      table_to_return = DocumentParser.new "#{file_name}", TxtDocumentParser
-      return table_to_return.parse
+      determine_file_type(file_name, TxtDocumentParser)
     when "docx"
-      table_to_return = DocumentParser.new "#{file_name}", DocxDocumentParser
-      return table_to_return.parse
+      determine_file_type(file_name,DocxDocumentParser)
     else
-      puts "Unsupported filetype given, try txt or docx"
-      determine_words_database()
+      wrong_file_type
     end
+  end
+
+  def wrong_file_type
+    puts "Unsupported filetype given, try txt or docx"
+    determine_words_database()
+  end
+
+  def determine_file_type(file_name,file_type)
+    table_to_return = DocumentParser.new "#{file_name}", file_type
+    return table_to_return.parse
   end
 
   def update
@@ -68,11 +87,19 @@ class GameWindow < Gosu::Window
   end
   
   def draw
+    draw_main_screen
+    @words_on_screen.each {|word| word.draw}
+    draw_explosion_word
+  end
+
+  def draw_main_screen
     @background_image.draw(0, 0, 0)
     @bigfont.draw("TYPESPEED", 10, 10, ZOrder::UI, 1.0, 1.0, 0xff_00ffff )
     @font.draw("Score: #{@score}", 10, 50, ZOrder::UI, 1.0, 1.0, 0xff_ffffff)
-	  @font.draw("Health: #{@health}",10, 70, ZOrder::UI, 1.0, 1.0, 0xff_ffffff)
-    @words_on_screen.each {|word| word.draw}
+    @font.draw("Health: #{@health}",10, 70, ZOrder::UI, 1.0, 1.0, 0xff_ffffff) 
+  end
+
+  def draw_explosion_word
     if @health <= 0
       @biggestfont.draw("GAME OVER", 300, 150, ZOrder::UI, 1.0, 1.0, 0xff_ff0000)
       @biggestfont.draw("Final Score : #{@score}", 300, 300, ZOrder::UI, 1.0, 1.0, 0xff_ff0000 )
@@ -104,18 +131,29 @@ class GameWindow < Gosu::Window
       end
       }
     end
-    def check_time
-      if (Gosu::milliseconds - @time) >= 60000 #once time is greater than a minute then game gets harder
-        if (Gosu::milliseconds - @time) % 6000 <= self.update_interval #adds a compound and normal word every 6 seconds
-            @words_on_screen.push(Word.new(@words[(rand(@words.length-1)).to_i]))
-            @words_on_screen.push(CompoundWord.new(@words[(rand(@words.length-1)).to_i] + @words[(rand(@words.length-1)).to_i]))
-         elsif (Gosu::milliseconds - @time) % 3000 <= self.update_interval #adds a normal word every 3 seconds
-            @words_on_screen.push(Word.new(@words[(rand(@words.length-1)).to_i]))
-        end    
-      elsif (Gosu::milliseconds - @time) % 3000 <= self.update_interval # under a minute, only add 1 normal word every 3 seconds
-            @words_on_screen.push(Word.new(@words[(rand(@words.length-1)).to_i]))
-      end      
+
+    def check_time    
+      lets_rand = @words[rand(@words.length-1).to_i] 
+      random_word = Word.new(lets_rand)
+      random_compound_word = CompoundWord.new(lets_rand + lets_rand)
+      total_time = Gosu::milliseconds - @time
+      time_conditions(total_time,random_word,random_compound_word)   
     end
+
+    def time_conditions(total_time,random_word,random_compound_word)
+      update_interval = self.update_interval
+      if total_time >= 60000 #once time is greater than a minute then game gets harder
+        if total_time % 6000 <= update_interval #adds a compound and normal word every 6 seconds
+            @words_on_screen.push(random_word)
+            @words_on_screen.push(random_compound_word)
+         elsif total_time % 3000 <= update_interval #adds a normal word every 3 seconds
+            @words_on_screen.push(random_word)
+        end    
+      elsif total_time % 3000 <= update_interval # under a minute, only add 1 normal word every 3 seconds
+            @words_on_screen.push(random_word)
+      end  
+    end
+
     def check_health
       if @health <= 0
         @words_on_screen.clear
