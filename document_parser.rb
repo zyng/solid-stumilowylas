@@ -1,3 +1,5 @@
+require 'docx'
+
 class DocumentParser
   def initialize(path = "words.txt", parser_class = TxtDocumentParser)
     @path = path
@@ -17,14 +19,16 @@ end
 
 class TxtDocumentParser < BaseDocumentParser
   def parse
-    @stolec = File.read("#{@path}")
-    @stolec = @stolec.split(", ")
-    return @stolec
+    @file_handler = File.read("#{@path}")
+    @file_handler = @file_handler.split(", ")
+    return @file_handler
   end
 end
 
 class DocxDocumentParser < BaseDocumentParser
   def parse
-    s
+    @file_handler = Docx::Document.open("#{@path}").to_s
+    @file_handler = @file_handler.split(", ")
+    return @file_handler
   end
 end

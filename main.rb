@@ -45,9 +45,17 @@ class GameWindow < Gosu::Window
 
   def parse_file_type(file_name)
     split_file_name = file_name.split(".")
-    puts split_file_name[-1]
-    asdf = DocumentParser.new "polskie.txt", TxtDocumentParser
-    return asdf.parse
+    case split_file_name[-1]
+    when "txt"
+      table_to_return = DocumentParser.new "#{file_name}", TxtDocumentParser
+      return table_to_return.parse
+    when "docx"
+      table_to_return = DocumentParser.new "#{file_name}", DocxDocumentParser
+      return table_to_return.parse
+    else
+      puts "Unsupported filetype given, try txt or docx"
+      determine_words_database()
+    end
   end
 
   def update
