@@ -37,11 +37,6 @@ Gracz przed rozpoczęciem rozgrywki będzie wybierał, czy chce użyć domyślne
 
 ### Właściwa refaktoryzacja
 
-Podstawowy kod nie posiadał testów, dlatego musieliśmy zacząć od stworzenia własnych. Użyliśmy do tego narzędzia ```RSpec```, umieszczając testy w folderze [spec]. Aby je uruchomić należy w głównym folderze projektu użyć komendy:
-```
-rspec
-```
-
 Program posiadał pewną pulę zapachów w kodzie, a postanowiliśmy się ich pozbyć po wprowadzeniu zaproponowanych przez nas zmian, podążając za radą ze schematu z książki 99 Bottles of OOP:
 
 ![Source: 99 Bottles of OOP by S. Metz & K. Owen](https://raw.githubusercontent.com/advprog/ztp/master/images/open_closed.png)
