@@ -106,3 +106,64 @@ class DocxDocumentParser < BaseDocumentParser
   end
 end
 ```
+
+Następnie aby klasa mogła być użyta w działąjącym już programie musieliśmy zmodyfikować plik ```main.rb`` dodając do niego odpowiednie metody.
+```ruby
+def determine_words_database
+    puts "Would you like to use your own words database (y/n)?"
+    answer = gets.chomp
+    #answer y,Y will work
+    if answer == "y" || answer == "Y"
+      determine_db
+    #answer n,N will work
+    elsif answer == "n" || answer == "N"
+      default_db
+    else
+      wrong_answer
+    end
+  end
+
+  def determine_db
+    puts "Please specify name of the file in the main game folder"
+    file_name = gets.chomp
+    return parse_file_type(file_name)
+  end
+
+  def default_db
+    default_words_list = DocumentParser.new
+    return default_words_list.parse
+  end
+
+  def wrong_answer
+    puts "We couldn't determine the answer with the input you gave. Please try again!"
+    determine_words_database()
+  end
+
+  def parse_file_type(file_name)
+    split_file_name = file_name.split(".")
+    case split_file_name[-1]
+    when "txt"
+      determine_file_type(file_name, TxtDocumentParser)
+    when "docx"
+      determine_file_type(file_name,DocxDocumentParser)
+    else
+      wrong_file_type
+    end
+  end
+
+  def wrong_file_type
+    puts "Unsupported filetype given, try txt or docx"
+    determine_words_database()
+  end
+
+  def determine_file_type(file_name,file_type)
+    table_to_return = DocumentParser.new "#{file_name}", file_type
+    return table_to_return.parse
+  end
+```
+
+dzięki czemu zmienna ```@words``` wywołuje funkcję ```determine_words_database()``` zamiast pobierać tylko plik ```words.txt```.
+
+
+### Reek
+Lista wyeliminowanych zapachów w kodzie znajduje się w pliku [codesmells.md](https://github.com/OpenClosed/solid-stumilowylas/blob/master/codesmells.md)
