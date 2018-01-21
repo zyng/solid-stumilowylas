@@ -1,68 +1,109 @@
-# TypeSpeed!
-TypeSpeed is a game where words fall from the top of the screen and you must type them before they reach the bottom of the screen. If they reach the bottom of the screen, your health will be deducted. If you type a word correctly, your score will go up and the word will dissappear from the screen. There will be normal words and compound words. Compound words are worth more but accelerate(get faster and faster) while the normal words fall at a steady rate. Are you fast enough?
+# Open/Closed Principle
+#### Autorzy: Krzysztof Łozowski, Michał Kisielewski
 
-## Setup
-To install this game onto your own computer, you must have GitBash, if you don't have GitBash then install the latest version onto your computer.   
-Link to install : [GitBash](https://git-scm.com/downloads)  
-We are going to copy the game folder onto your desktop, make sure you are on the desktop and click the right click button of your mouse to open up the menu and click GITBASH HERE or GITBASH from the menu and it will open the gitBash console and once you execute the code down below, it will copy the game folder onto your desktop. 
+## Kod do refaktoryzacji: gra Typespeed
 
-Please copy this onto the console to start the process of transfering the game to your computer : 
-```
-$ git clone https://github.com/mmish321/typeSpeed
-```    
-This will copy the code of TypeSpeed onto your computer and create a folder called typeSpeed!
+[Link do oryginalnego repozytorium.](https://github.com/mmish321/typeSpeed)
 
-Next we will enter the folder so we can run the game.  
-Type this into the console:
-```
-$ cd typeSpeed
-```  
-Once you are in the folder,type this in order to install gosu so the game can run! Withou the Gosu gem, the game will not function
-```
-$ gem install gosu
+Oryginalny kod jest prostą implementacją gry Typespeed, w języku Ruby. Program działa przy wykorzystaniu gemu gosu, z prostym interfejsem 2D.
 
+Aby uruchomić grę, musimy zainstalować gem gosu:
 ```
+gem install gosu
 ```
-$ bundle install
-
+a następnie w głównym folderze z grą użyć komendy:
+```
+ruby main.rb
 ```
 
-Great! Now we're in the folder and gosu is installed! Let's run the game! 
-To run the game, type into the console:
+### Opis kodu
+Najważniejszym plikiem pozostaje [main.rb](https://github.com/OpenClosed/solid-stumilowylas/blob/master/main.rb), odpowiadający za pętle gry, tworzenie planszy i interakcję gracza z grą.
+
+Istotną klasą jest [compound_word.rb](https://github.com/OpenClosed/solid-stumilowylas/blob/master/compound_word.rb) odpowiadzialna za dobieranie przyśpieszenia słów pojawiających się na planszy.
+
+Pozostałe klasy z oryginalnej wersji programu to:
+[word.rb](https://github.com/OpenClosed/solid-stumilowylas/blob/master/word.rb) odpowiedzialna za umieszczanie słów na planszy,
+[z_order.rb](https://github.com/OpenClosed/solid-stumilowylas/blob/master/z_order.rb)
+
+## Refaktoryzacja
+
+### Proponowana zmiana: Obsługa plików z bazą słów w wielu formatach tekstowych
+
+Oryginalny kod używał "na sztywno" jednej i tej samej listy słów: [words.txt](https://github.com/OpenClosed/solid-stumilowylas/blob/master/words.txt).
+
+Postanowiliśmy wprowadzić zmianę, która pozwoliłaby użykownikowi na podanie własnej listy słów do programu, zarówno w formacie .txt jak i .docx.
+
+Gracz przed rozpoczęciem rozgrywki będzie wybierał, czy chce użyć domyślnej bazy słów, czy podać swoją własną.
+
+### Właściwa refaktoryzacja
+
+Podstawowy kod nie posiadał testów, dlatego musieliśmy zacząć od stworzenia własnych. Użyliśmy do tego narzędzia ```RSpec```, umieszczając testy w folderze [spec]. Aby je uruchomić należy w głównym folderze projektu użyć komendy:
 ```
-$ ruby main.rb
-
-```  
-
-
-### Game Controls
-Once you start the game in the console, a window will pop up. 3 seconds will be given before the words start falling from the top of the window.  After a minute of time, the game will get harder! Compound words will start falling after one minute.  
-
-Once you have finished typing a word on your keyboard, press the **Return or Enter key**  depending on your keyboard
-The return/enter key will submit the word you typed and if your word matches the one of the words on the screen, the word will disappear and your score will increase and you can move on to type the other words on the screen!  
-
-**Hint!**: Please make sure you are actually in the game window, if you are typing words and pressing return and nothing happens, its probably because you are not in the game window! Use your mouse and click anywhere on the game window and then start typing!
-
-  **If you mess up typing a word, do not panic!**
-* If you messed up early and only typed a few letters, you can press the backspace key to clear the letters and restart typing the word, then press the return key once you have typed the correct word to submit the word or you can do the other strategy below if you prefer.
-* If you realize that you completley messed up the word, you can simply press the return key to submit the wrong word(Don't worry it won't count against you at all), and then retype the word and press the return key and continue typing! Be quick when retyping a word!
-
-TypeSpeed will only take away your health **if the words reach the bottom** of the screen so don't worry about submitting wrong words with the return key! It will not affect your score!    
-
-To **exit** the game, simply press the **escape key** and the game window will close or click on the red exit button , located at the top right corner of the window!  
-To **restart the game**, simply press the **enter/return key** when  the GAME OVER screen appears and the game will completely restart. If you closed the game and would like to restart, the directions are below  
-If you have exited the game and **closed the gitBash console**  then :
-Open gitBash from the desktop again by pulling the right click menu up and clicking on gitBash then type the following code below into the console to run the game again
-
-```
-$ cd typeSpeed
-```
-```
-$ ruby main.rb
-```  
-**Hint!**: If the gitBash console is still open and you exited the game then simply type the code down below to restart the game
-```
-$ ruby main.rb
+rspec
 ```
 
-#### HAVE FUN TYPING!
+Program posiadał pewną pulę zapachów w kodzie, a postanowiliśmy się ich pozbyć po wprowadzeniu zaproponowanych przez nas zmian, podążając za radą ze schematu z książki 99 Bottles of OOP:
+
+![Source: 99 Bottles of OOP by S. Metz & K. Owen]
+(https://raw.githubusercontent.com/advprog/ztp/master/images/open_closed.png)
+
+### Użycie schematu
+
+Bazowy program był napisany w sposób dość zrozumiały.
+
+Postanowiliśmy stowrzyć klasę odpowiadającą za obsługę różnych formatów plików - ```document_parser.rb```, która w zależności od typu pliku wykonuje odpowiednie operacje na nich.
+```
+require 'docx'
+#Document Parser klasa
+class DocumentParser
+  def initialize(path = "words.txt", parser_class = TxtDocumentParser)
+    @path = path
+    @parser_service = parser_class.new(@path)
+  end
+
+  def parse
+    @parser_service.parse
+  end
+end
+
+#klasa dla base
+class BaseDocumentParser
+  def initialize(path = "words.txt")
+    @path = path
+  end
+end
+
+# klasa dla txt
+class TxtDocumentParser < BaseDocumentParser
+
+  attr_reader :file_handler
+
+  def initialize(path = "words.txt")
+    @path = path
+    @file_handler = file_handler
+  end
+
+  def parse
+    @file_handler = File.read("#{@path}")
+    @file_handler = @file_handler.split(", ")
+    return @file_handler
+  end
+end
+
+#klasa dla docx
+class DocxDocumentParser < BaseDocumentParser
+
+  attr_reader :file_handler
+
+  def initialize(path = "words.txt")
+    @path = path
+    @file_handler = file_handler
+  end
+
+  def parse
+    @file_handler = Docx::Document.open("#{@path}").to_s
+    @file_handler = @file_handler.split(", ")
+    return @file_handler
+  end
+end
+```
