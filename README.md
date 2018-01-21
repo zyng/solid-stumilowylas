@@ -44,15 +44,14 @@ rspec
 
 Program posiadał pewną pulę zapachów w kodzie, a postanowiliśmy się ich pozbyć po wprowadzeniu zaproponowanych przez nas zmian, podążając za radą ze schematu z książki 99 Bottles of OOP:
 
-![Source: 99 Bottles of OOP by S. Metz & K. Owen]
-(https://raw.githubusercontent.com/advprog/ztp/master/images/open_closed.png)
+![Source: 99 Bottles of OOP by S. Metz & K. Owen](https://raw.githubusercontent.com/advprog/ztp/master/images/open_closed.png)
 
 ### Użycie schematu
 
 Bazowy program był napisany w sposób dość zrozumiały.
 
 Postanowiliśmy stowrzyć klasę odpowiadającą za obsługę różnych formatów plików - ```document_parser.rb```, która w zależności od typu pliku wykonuje odpowiednie operacje na nich.
-```
+```ruby
 require 'docx'
 #Document Parser klasa
 class DocumentParser
